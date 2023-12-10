@@ -2,7 +2,8 @@
   "lock": false,
   "tasks": {
     "start": "deno run -A --watch=static/,routes/ dev.ts",
-    "update": "deno run -A -r https://fresh.deno.dev/update ."
+    "update": "deno run -A -r https://fresh.deno.dev/update .",
+    "push": "git add * && git commit -m \"Update\" && git push -u origin main"
   },
   "lint": {
     "rules": {
