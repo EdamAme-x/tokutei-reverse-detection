@@ -38,8 +38,8 @@ export async function handler(req: Request) {
       "accept-language": "ja,en-US;q=0.9,en;q=0.8",
       "content-type":
         "multipart/form-data; boundary=----WebKitFormBoundary5j3yGfB7uoDK4qPt",
-      "sec-ch-ua":
-        '"Google Chrome";v="119", "Chromium";v="' + Math.floor(Math.random() * 130) + '", "Not?A_Brand";v="24"',
+      "sec-ch-ua": '"Google Chrome";v="119", "Chromium";v="' +
+        Math.floor(Math.random() * 130) + '", "Not?A_Brand";v="24"',
       "sec-ch-ua-mobile": "?0",
       "sec-ch-ua-platform": '"Windows"',
       "sec-fetch-dest": "empty",
@@ -50,7 +50,9 @@ export async function handler(req: Request) {
     "referrer": "https://www.activetk.jp/tools/whois",
     "referrerPolicy": "same-origin",
     "body":
-      '------WebKitFormBoundary5j3yGfB7uoDK4qPt\r\nContent-Disposition: form-data; name="iana"\r\n\r\n' + (data.CreatorInfo as Record<string, string>).HostName + '\r\n------WebKitFormBoundary5j3yGfB7uoDK4qPt--\r\n',
+      '------WebKitFormBoundary5j3yGfB7uoDK4qPt\r\nContent-Disposition: form-data; name="iana"\r\n\r\n' +
+      (data.CreatorInfo as Record<string, string>).HostName +
+      "\r\n------WebKitFormBoundary5j3yGfB7uoDK4qPt--\r\n",
     "method": "POST",
     "mode": "cors",
     "credentials": "include",
@@ -59,7 +61,13 @@ export async function handler(req: Request) {
   return new Response(JSON.stringify({
     result: "OK",
     ...parseContext(data),
-    whois: await geo.text(),
+    whois: (await geo.text()).split("\n").map((line) => {
+      const [key, value] = line.split(":");
+      return {
+        key: (key ?? "").trim(),
+        value: (value ?? "").trim(),
+      };
+    }),
   }));
 }
 
