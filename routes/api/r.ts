@@ -62,3 +62,5 @@ export async function handler(req: Request) {
     whois: await geo.text(),
   }));
 }
+
+// ACTIVETK Self-Destructive Edition
