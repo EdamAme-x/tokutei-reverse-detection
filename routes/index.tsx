@@ -1,15 +1,16 @@
 import { Head } from "$fresh/runtime.ts";
 import { useSignal } from "@preact/signals";
+import { TOKUTEI } from "../islands/Tokutei.tsx";
 
 export default function Home() {
-  const url = useSignal("https://rinu.cf/abcde");
 
   return (
     <>
-      <Head>
-        <title>TOKUTEI V2 URL 逆探知</title>
-      </Head>
-      <div>
+      <div class="w-full h-screen bg-gray-700 text-white grid place-items-center">
+        <h1 class="text-4xl font-bold">TOKUTEI V2 URL 逆探知</h1>
+        <div>
+          <TOKUTEI />
+        </div>
       </div>
     </>
   );
