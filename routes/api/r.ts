@@ -1,10 +1,13 @@
+type TokuteiResponse = { status: string, LinkURL: string, CreatorInfo: { IPAddress: string, Location: string, TimeZone: string }, CreatedDateTimeAsUnixTime: number, UsedCount: number }
+
+
 export async function handler(req: Request): Promise<Response> {
   const code = atob(new URL(req.url).searchParams.get("c") ?? "Error");
 
   const response = await fetch(
     `https://api.activetk.jp/urlmin/get?code=${code}`,
   );
-  const data: { status: string, LinkURL: string, CreatorInfo: { IPAddress: string, Location: string, TimeZone: string }, CreatedDateTimeAsUnixTime: number, UsedCount: number } =
+  const data: TokuteiResponse =
     await response.json();
 
   if (data.status === "Error") {
