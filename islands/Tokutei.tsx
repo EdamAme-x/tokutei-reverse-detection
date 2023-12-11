@@ -2,7 +2,15 @@ import { useSignal } from "https://esm.sh/*@preact/signals@1.1.3";
 import { TokuteiResult } from "../routes/api/r.ts";
 import { Map } from "./Map.tsx";
 import { parseToCode } from "../uitls/parseToCode.ts";
-import { useEffect } from "preact/hooks";
+
+const Toast = {
+  success: (message: string) => {
+    console.log(message);
+  },
+  error: (message: string) => {
+    console.log(message);
+  }
+}
 
 const getDefault = () => {
   try {
@@ -28,8 +36,10 @@ export function TOKUTEI() {
 
   const getResult = async () => {
     if (Date.now() - lastGet.value < 1000) {
-      return alert("短時間に実行しすぎです。餅ついてください");
+      Toast.error("短時間に実行しすぎです。餅ついてください。");
     }
+
+    Toast.success("逆探知中...");
 
     const response = await fetch(
       `/api/r?c=${btoa(parseToCode(url.value))}`,
@@ -38,6 +48,10 @@ export function TOKUTEI() {
 
     result.value = data;
     lastGet.value = Date.now();
+
+    if (data.result === "OK") {
+      Toast.success("逆探知成功");
+    }
   };
 
   function getDate(date: number) {

@@ -12,6 +12,7 @@ import * as $index from "./routes/index.tsx";
 import * as $use from "./routes/use.tsx";
 import * as $Counter from "./islands/Counter.tsx";
 import * as $Map from "./islands/Map.tsx";
+import * as $Toast from "./islands/Toast.js";
 import * as $Tokutei from "./islands/Tokutei.tsx";
 import { type Manifest } from "$fresh/server.ts";
 
@@ -29,6 +30,7 @@ const manifest = {
   islands: {
     "./islands/Counter.tsx": $Counter,
     "./islands/Map.tsx": $Map,
+    "./islands/Toast.js": $Toast,
     "./islands/Tokutei.tsx": $Tokutei,
   },
   baseUrl: import.meta.url,
