@@ -16,7 +16,7 @@ export default function Home() {
             target={"_blank"}
             formTarget={"_blank"}
             href="https://twitter.com/amex2189"
-            class={"mr-1"}
+            class={"mr-1 underline"}
           >
             @amex2189
           </a>
