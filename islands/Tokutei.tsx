@@ -88,7 +88,9 @@ export function TOKUTEI() {
         {result.value.result === "OK" && (
           <>
             <h2>Result: {result.value.result}</h2>
-            <h4>TargetURL: {result.value.target}</h4>
+            <h4>TargetURL: {" "}
+              <input class="text-white bg-gray-700 border-gray-500 border-2 rounded" type="text" value={(result.value.target.includes("tokutei.cf") ? new URL(result.value.target).searchParams.get("url") : result.value.target) ?? result.value.target} />
+            </h4>
             <abbr title={result.value.creator.ip}>
               IP: {result.value.creator.ip}
             </abbr>
