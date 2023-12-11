@@ -1,10 +1,25 @@
 // deno-lint-ignore-file
-export type TokuteiResponse = { status: string, LinkURL: string, CreatorInfo: { IPAddress: string, Location: string, TimeZone: string }, CreatedDateTimeAsUnixTime: number, UsedCount: number }
-export type TokuteiParseContext = { target: string, code: string, creator: { ip: string, location: string, country: string }, created_at: number, uses_count: number, geo: {
-    lotitude: string
-    longitude: string
-} }
-export type TokuteiResult = (({ result: "GOOD" } & TokuteiParseContext )  | { result: "BAD" }) | { result: "PENDING" }
+export type TokuteiResponse = {
+  status: string;
+  LinkURL: string;
+  CreatorInfo: { IPAddress: string; Location: string; TimeZone: string };
+  CreatedDateTimeAsUnixTime: string;
+  UsedCount: number;
+};
+export type TokuteiParseContext = {
+  target: string;
+  code: string;
+  creator: { ip: string; location: string; country: string };
+  created_at: number;
+  uses_count: number;
+  geo: {
+    latitude: string;
+    longitude: string;
+  };
+};
+export type TokuteiResult =
+  | (({ result: "OK" } & TokuteiParseContext) | { result: "BAD" })
+  | { result: "PENDING" };
 
 export async function handler(req: Request): Promise<Response> {
   const code = atob(new URL(req.url).searchParams.get("c") ?? "Error");
@@ -12,8 +27,7 @@ export async function handler(req: Request): Promise<Response> {
   const response = await fetch(
     `https://api.activetk.jp/urlmin/get?code=${code}`,
   );
-  const data: TokuteiResponse =
-    await response.json();
+  const data: TokuteiResponse = await response.json();
 
   if (data.status === "Error") {
     return new Response(
@@ -25,7 +39,7 @@ export async function handler(req: Request): Promise<Response> {
   }
 
   const parseContext = (
-    data: { LinkURL: string, CreatorInfo: { IPAddress: string, Location: string, TimeZone: string }, CreatedDateTimeAsUnixTime: number, UsedCount: number },
+    data: TokuteiResponse,
   ) => {
     return {
       target: data.LinkURL,
@@ -35,7 +49,7 @@ export async function handler(req: Request): Promise<Response> {
         location: data.CreatorInfo.Location,
         country: data.CreatorInfo.TimeZone,
       },
-      created_at: data.CreatedDateTimeAsUnixTime,
+      created_at: parseInt(data.CreatedDateTimeAsUnixTime),
       uses_count: data.UsedCount,
     };
   };
@@ -72,10 +86,10 @@ export async function handler(req: Request): Promise<Response> {
   return new Response(JSON.stringify({
     result: "OK",
     ...parseContext(data),
-    point: {
+    geo: {
       latitude: latitude,
       longitude: longitude,
-    }
+    },
   }));
 }
 

@@ -1,11 +1,16 @@
 export function parseToCode(url: string): string {
   if (url.includes("http") && url.includes("://")) {
-    const path = new URL(url).pathname;
-    if (path.split("").pop() === "/") {
-      return path.split("/")[path.split("/").length - 2];
-    } else {
-      return path.split("/")[path.split("/").length - 1];
+    let path = new URL(url).pathname;
+    while (path.endsWith('/') || path.endsWith('?')) {
+      path = path.slice(0, -1);
     }
+    const parts = path.split("/");
+    return parts[parts.length - 1].substring(parts[parts.length - 1].length - 5);
   }
-  return url.split("/")[url.split("/").length - 1];
+  let path = url;
+  while (path.endsWith('/') || path.endsWith('?')) {
+    path = path.slice(0, -1);
+  }
+  const parts = path.split("/");
+  return parts[parts.length - 1].substring(parts[parts.length - 1].length - 5);
 }
