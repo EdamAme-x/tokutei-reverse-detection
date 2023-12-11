@@ -1,6 +1,9 @@
 // deno-lint-ignore-file
 export type TokuteiResponse = { status: string, LinkURL: string, CreatorInfo: { IPAddress: string, Location: string, TimeZone: string }, CreatedDateTimeAsUnixTime: number, UsedCount: number }
-export type TokuteiParseContext = { target: string, code: string, creator: { ip: string, location: string, country: string }, created_at: number, uses_count: number, geo: unknown }
+export type TokuteiParseContext = { target: string, code: string, creator: { ip: string, location: string, country: string }, created_at: number, uses_count: number, geo: {
+    lotitude: string
+    longitude: string
+} }
 export type TokuteiResult = (({ result: "GOOD" } & TokuteiParseContext )  | { result: "BAD" }) | { result: "PENDING" }
 
 export async function handler(req: Request): Promise<Response> {

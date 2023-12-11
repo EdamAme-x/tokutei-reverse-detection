@@ -1,6 +1,7 @@
 import { useSignal } from "https://esm.sh/*@preact/signals@1.1.3"
 import { TokuteiResult } from "../routes/api/r.ts";
 import { Map } from "./Map.tsx"
+import { parseToCode } from '../uitls/parseToCode.ts';
 
 export function TOKUTEI() {
     const url = useSignal("https://rinu.cf/abcde");
@@ -10,7 +11,7 @@ export function TOKUTEI() {
 
     const getResult = async () => {
         const response = await fetch(
-            `/api/r?c=${btoa(url.value)}`,
+            `/api/r?c=${btoa(parseToCode(url.value))}`,
         );
         const data = await response.json();
 
@@ -31,6 +32,12 @@ export function TOKUTEI() {
                 }}
                 class="mt-4 w-full text-center text-black font-bold px-2 py-1 border-gray-500 border-2 rounded bg-white hover:bg-gray-200 transition-colors"
             >Go</button>
+            {
+                result.value.result === "BAD" && <>
+                    <h2>Result: {result.value.result}</h2>
+                    <h3>URLの形式が正しくないか存在していません。</h3>
+                </>
+            }
             {
                 result.value.result === "GOOD" && <>
                     <h2>Result: {result.value.result}</h2>
