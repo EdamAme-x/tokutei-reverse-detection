@@ -8,14 +8,20 @@ export function TOKUTEI() {
   const result = useSignal<TokuteiResult>({
     result: "PENDING",
   });
+  const lastGet = useSignal<number>(Date.now());
 
   const getResult = async () => {
+    if (Date.now() - lastGet.value < 1000) {
+      return alert("短時間に実行しすぎです。餅ついてください");
+    }
+
     const response = await fetch(
       `/api/r?c=${btoa(parseToCode(url.value))}`,
     );
     const data = await response.json();
 
     result.value = data;
+    lastGet.value = Date.now();
   };
 
   function getDate(date: number) {
@@ -42,6 +48,11 @@ export function TOKUTEI() {
           type="text"
           value={url.value}
           onInput={(e) => url.value = e.currentTarget.value}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              getResult();
+            }
+          }}
           class="w-full px-2 py-1 text-white font-bold border-gray-500 border-2 rounded bg-gray-700 hover:bg-gray-600 transition-colors"
         />
         <button

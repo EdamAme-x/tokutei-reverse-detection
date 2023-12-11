@@ -10,6 +10,9 @@ export default function Home() {
         <div>
           <TOKUTEI />
         </div>
+        <p>
+          Powerd by <a href="https://twitter.com/amex2189">@amex2189</a>
+        </p>
       </div>
     </>
   );
