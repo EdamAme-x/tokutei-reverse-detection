@@ -30,7 +30,7 @@ export function TOKUTEI() {
       // deno-lint-ignore ban-ts-comment
       // @ts-ignore
       timeZone: result.value.creator.country,
-    })
+    });
   }
 
   console.log(result.value);
