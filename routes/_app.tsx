@@ -2,7 +2,7 @@ import { AppProps } from "$fresh/server.ts";
 
 export default function App({ Component }: AppProps) {
   return (
-    <>
+    <html>
       <head
         lang="ja"
         dir="ltr"
@@ -21,7 +21,9 @@ export default function App({ Component }: AppProps) {
         <link rel="icon" type="image/svg+xml" href="/logo.svg" />
         <link rel="apple-touch-icon" href="/logo.svg" />
       </head>
-      <Component />
-    </>
+      <body>
+        <Component />
+      </body>
+    </html>
   );
 }

@@ -2,9 +2,25 @@ import { useSignal } from "https://esm.sh/*@preact/signals@1.1.3";
 import { TokuteiResult } from "../routes/api/r.ts";
 import { Map } from "./Map.tsx";
 import { parseToCode } from "../uitls/parseToCode.ts";
+import { useEffect } from "preact/hooks";
+
+const getDefault = () => {
+  try {
+    new URL(window.location.href);
+    return !(new URL(window.location.href).searchParams.get("code"))
+      ? "https://rinu.cf/abcde"
+      : `https://rinu.cf/${
+        new URL(window.location.href).searchParams.get(
+          "code",
+        )
+      }`;
+  } catch (e) {
+    return `https://rinu.cf/abcde`;
+  }
+};
 
 export function TOKUTEI() {
-  const url = useSignal("https://rinu.cf/abcde");
+  const url = useSignal(getDefault());
   const result = useSignal<TokuteiResult>({
     result: "PENDING",
   });
