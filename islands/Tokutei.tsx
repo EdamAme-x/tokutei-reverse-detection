@@ -16,8 +16,8 @@ const getDefault = () => {
   try {
     new URL(window.location.href);
     return !(new URL(window.location.href).searchParams.get("code"))
-      ? "https://rinu.cf/abcde"
-      : `https://rinu.cf/${
+      ? "https://rinu.jp/abcde"
+      : `https://rinu.jp/${
         new URL(window.location.href).searchParams.get(
           "code",
         )
