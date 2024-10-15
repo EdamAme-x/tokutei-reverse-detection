@@ -54,7 +54,7 @@ export async function handler(req: Request): Promise<Response> {
     };
   };
 
-  const geo = await fetch("https://www.ipaddress.com/ip-lookup", {
+  const geo = await fetch("https://ip.evex.land/" + data.CreatorInfo.IPAddress, {
     "headers": {
       "accept":
         "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
@@ -71,17 +71,17 @@ export async function handler(req: Request): Promise<Response> {
       "sec-fetch-user": "?1",
       "upgrade-insecure-requests": "1",
     },
-    "referrer": "https://www.ipaddress.com/ip-lookup",
+    "referrer": "https://ip.evex.land",
     "referrerPolicy": "strict-origin-when-cross-origin",
-    "body": "host=" + data.CreatorInfo.IPAddress,
-    "method": "POST",
+    "method": "GET",
     "mode": "cors",
     "credentials": "include",
   });
 
-  const html = await geo.text();
-  const latitude = html.split("Latitude</th><td>")[1].split(" /")[0];
-  const longitude = html.split("Longitude</th><td>")[1].split(" /")[0];
+const json = await geo.json();
+
+  const latitude = json["lat"];
+  const longitude = json["lon"];
 
   return new Response(JSON.stringify({
     result: "OK",
